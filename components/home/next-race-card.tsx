@@ -2,6 +2,7 @@ import { Race } from "@/types/f1";
 import { RacePhaseContent, RacePhaseLabel } from "./race-phase-content";
 import { Card, CardContent } from "@/components/ui/card";
 import { toWIBTime, formatWIBTime } from "@/lib/timezone";
+import { Calendar, MapPin } from "lucide-react";
 
 interface NextRaceCardProps {
   race: Race;
@@ -24,66 +25,81 @@ export function NextRaceCard({ race }: NextRaceCardProps) {
     }));
 
   return (
-     <Card className="overflow-hidden border border-[#2a2530] bg-[#141118]">
-      {/* Wave BG Header */}
-      <div className="relative min-h-[170px] bg-[#141118] px-5 pt-4 pb-0">
-        {/* Glow SVG — dekoratif, logic tetap */}
-        <svg className="absolute inset-0 h-full w-full opacity-55" viewBox="0 0 680 180" preserveAspectRatio="none">
-          <defs>
-            <radialGradient id="g1" cx="75%" cy="50%" r="55%">
-              <stop offset="0%" stopColor="#c00000" stopOpacity="0.45" />
-              <stop offset="100%" stopColor="#141118" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          <rect width="680" height="180" fill="#141118" />
-          <rect width="680" height="180" fill="url(#g1)" />
-          <path d="M200 90 Q300 40 420 80 Q520 110 620 60" stroke="#c00000" strokeWidth="1.5" fill="none" opacity="0.5" />
-          <path d="M150 110 Q280 70 400 100 Q500 125 600 80" stroke="#8b0000" strokeWidth="1" fill="none" opacity="0.4" />
-        </svg>
+    <Card className="overflow-hidden border border-[#303037] bg-[#15151e] shadow-xl rounded-[14px] transition-colors hover:border-[#454550]">
+      {/* Top Motorsport Accent Stripe */}
+      <div className="h-1 w-full bg-gradient-to-r from-[#e10600] via-[#e10600] to-transparent" />
 
-        {/* Header */}
-        <div className="relative z-10 flex items-center justify-between mb-4">
-          <span className="text-sm font-medium text-white">Grand Prix</span>
-          <span className="text-xs text-[#a09aaa] bg-white/7 border border-white/10 px-3 py-1 rounded-full">
+      {/* Header */}
+      <div className="p-5 sm:p-6 pb-4">
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-[#e10600]" aria-hidden />
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#aaaaaa]">
+              Grand Prix Schedule
+            </span>
+          </div>
+          <span className="rounded-full border border-[#303037] bg-white/5 px-3 py-1 font-mono text-[11px] font-bold uppercase tracking-wider text-[#aaaaaa]">
             Round {race.round}
           </span>
         </div>
 
         {/* Race info */}
-        <div className="relative z-10">
-          <h2 className="text-2xl font-bold text-white mb-1">{race.raceName}</h2>
-          <p className="text-sm text-[#a09aaa]">{race.Circuit.Location.locality}, {race.Circuit.Location.country}</p>
-          <p className="text-xs text-[#706a7a] mb-2">{race.Circuit.circuitName}</p>
-          <p className="text-sm font-semibold text-[#e03535]">{formattedDate}</p>
+        <div>
+          <h2 className="text-2xl font-black uppercase tracking-tight text-white sm:text-3xl">
+            {race.raceName}
+          </h2>
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[13px] text-[#aaaaaa]">
+            <span className="flex items-center gap-1.5">
+              <MapPin className="h-3.5 w-3.5 text-[#e10600]" aria-hidden />
+              <span>{race.Circuit.Location.locality}, {race.Circuit.Location.country}</span>
+            </span>
+            <span className="text-[#70707c]">•</span>
+            <span className="text-[#70707c]">{race.Circuit.circuitName}</span>
+          </div>
+          <div className="mt-2 flex items-center gap-1.5 text-[13px] font-bold text-[#e10600]">
+            <Calendar className="h-3.5 w-3.5" aria-hidden />
+            <span>{formattedDate}</span>
+          </div>
         </div>
       </div>
 
-      <div className="h-px bg-[#1e1a26]" />
+      <div className="h-px bg-[#303037]" />
 
-      <CardContent className="bg-[#141118] px-5 pt-4">
-        <div className="mb-3">
+      <CardContent className="p-5 sm:p-6 pt-5">
+        <div className="mb-4">
           <RacePhaseLabel race={race} />
         </div>
         <RacePhaseContent race={race} />
 
         {/* Sessions */}
-        <p className="text-[11px] font-semibold text-[#706a7a] uppercase tracking-widest mb-3 mt-5">Race Sessions (WIB)</p>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-          {sessions.map((session) => (
-            <div
-              key={session.name}
-              className={`rounded-xl border p-2.5 text-center ${
-                session.name === "Race"
-                  ? "border-[#e03535] bg-[#1e1218]"
-                  : "border-[#2a2530] bg-[#1e1a26]"
-              }`}
-            >
-              <p className="text-[11px] font-bold text-[#e03535]">{session.name}</p>
-              <p className="text-xs text-[#c8c2d4] mt-1">{session.wibTime}</p>
-            </div>
-          ))}
+        <div className="mt-6 border-t border-[#303037] pt-5">
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#aaaaaa] mb-3">
+            Weekend Sessions (WIB)
+          </p>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+            {sessions.map((session) => {
+              const isRace = session.name === "Race";
+              return (
+                <div
+                  key={session.name}
+                  className={`rounded-[8px] border p-2.5 text-center transition-all ${
+                    isRace
+                      ? "border-[#e10600] bg-[#e10600]/10"
+                      : "border-[#303037] bg-[#1b1b26] hover:border-[#454550]"
+                  }`}
+                >
+                  <p className={`text-[11px] font-bold uppercase tracking-wider ${isRace ? "text-[#e10600]" : "text-[#aaaaaa]"}`}>
+                    {session.name}
+                  </p>
+                  <p className="mt-1 font-mono text-[12px] font-semibold text-white">
+                    {session.wibTime}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </CardContent>
     </Card>
-  )
-};
+  );
+}

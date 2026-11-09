@@ -1,6 +1,7 @@
 import { DriverStanding, ConstructorStanding } from "@/types/f1";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
+import { podiumBorderClass, podiumTextClass } from "@/lib/f1-utils";
 
 interface DriverStandingsTableProps {
   type: "driver";
@@ -11,67 +12,31 @@ interface ConstructorStandingsTableProps {
   standings: ConstructorStanding[];
 }
 
-const thClass = "relative z-10 bg-transparent text-[10px] font-bold uppercase tracking-widest text-[#706a7a]";
-
-function podiumBorder(pos: number) {
-  if (pos === 1) return "border-l-2 border-l-[#e03535]";
-  if (pos === 2) return "border-l-2 border-l-[#888]";
-  if (pos === 3) return "border-l-2 border-l-[#b87333]";
-  return "border-l-2 border-l-transparent";
-}
-
-function podiumColor(pos: number) {
-  if (pos === 1) return "text-[#e03535]";
-  if (pos === 2) return "text-[#aaa]";
-  if (pos === 3) return "text-[#b87333]";
-  return "text-white";
-}
-
-// Overlay wave yang diletakkan di luar <table>
-function WaveOverlay() {
-  return (
-    <div className="absolute top-0 left-0 right-0 h-12 pointer-events-none z-0" aria-hidden>
-      <svg className="h-full w-full opacity-55" viewBox="0 0 680 48" preserveAspectRatio="none">
-        <defs>
-          <radialGradient id="sw" cx="75%" cy="50%" r="60%">
-            <stop offset="0%" stopColor="#c00000" stopOpacity="0.45" />
-            <stop offset="100%" stopColor="#141118" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        <rect width="680" height="48" fill="#141118" />
-        <rect width="680" height="48" fill="url(#sw)" />
-        <path d="M160 24 Q300 7 450 22 Q560 32 670 14" stroke="#c00000" strokeWidth="1.3" fill="none" opacity="0.5" />
-        <path d="M140 36 Q290 18 440 30 Q550 40 655 25" stroke="#8b0000" strokeWidth="0.8" fill="none" opacity="0.3" />
-      </svg>
-    </div>
-  );
-}
+const thClass = "bg-transparent text-[11px] font-bold uppercase tracking-[0.15em] text-[#aaaaaa] py-3.5";
 
 export function StandingsTable(props: DriverStandingsTableProps | ConstructorStandingsTableProps) {
   if (props.standings.length === 0) {
     return (
-      <div className="overflow-hidden rounded-2xl border border-[#2a2530] bg-[#141118] px-6 py-8 text-center">
-        <p className="text-[13px] text-[#706a7a]">No standings data available</p>
+      <div className="overflow-hidden rounded-[14px] border border-[#303037] bg-[#15151e] px-6 py-12 text-center shadow-xl">
+        <p className="text-[14px] font-medium text-[#aaaaaa]">No standings data available</p>
       </div>
     );
   }
 
-  // ── Driver Table ──
+  // ── Driver Standings Table ──
   if (props.type === "driver") {
     const standings = props.standings as DriverStanding[];
     return (
-      <Card className="overflow-hidden border border-[#2a2530] bg-[#141118]">
-        <CardContent className="overflow-x-auto p-0 relative">
-          {/* wave overlay di luar table */}
-          <WaveOverlay />
-          <Table className="border-collapse relative">
+      <Card className="overflow-hidden border border-[#303037] bg-[#15151e] shadow-xl rounded-[14px]">
+        <CardContent className="overflow-x-auto p-0">
+          <Table className="border-collapse w-full">
             <TableHeader>
-              <TableRow className="relative h-12 border-b border-[#2a2530] hover:bg-transparent">
-                <TableHead className={`${thClass} w-12 text-center`}>Pos</TableHead>
+              <TableRow className="border-b border-[#303037] bg-[#1b1b26]/60 hover:bg-[#1b1b26]/60">
+                <TableHead className={`${thClass} w-16 text-center`}>Pos</TableHead>
                 <TableHead className={thClass}>Driver</TableHead>
-                <TableHead className={`${thClass} hidden sm:table-cell border-l border-[#1e1a26]`}>Constructor</TableHead>
-                <TableHead className={`${thClass} border-l border-[#1e1a26] text-right`}>Points</TableHead>
-                <TableHead className={`${thClass} border-l border-[#1e1a26] text-right pr-5`}>Wins</TableHead>
+                <TableHead className={`${thClass} hidden sm:table-cell`}>Constructor</TableHead>
+                <TableHead className={`${thClass} text-right`}>Points</TableHead>
+                <TableHead className={`${thClass} text-right pr-6`}>Wins</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -80,32 +45,32 @@ export function StandingsTable(props: DriverStandingsTableProps | ConstructorSta
                 return (
                   <TableRow
                     key={standing.Driver.driverId}
-                    className={`border-b border-[#1e1a26] transition-colors hover:bg-[#1a1621] last:border-0 ${podiumBorder(pos)}`}
+                    className={`border-b border-[#303037]/60 transition-colors hover:bg-[#1b1b26] last:border-0 ${podiumBorderClass(pos)}`}
                   >
-                    <TableCell className="w-12 text-center py-3">
-                      <span className={`text-[15px] font-bold ${podiumColor(pos)}`}>
+                    <TableCell className="w-16 text-center py-3.5">
+                      <span className={`font-mono text-[14px] font-black ${podiumTextClass(pos)}`}>
                         {standing.positionText}
                       </span>
                     </TableCell>
-                    <TableCell className="py-3">
+                    <TableCell className="py-3.5">
                       <div className="flex flex-col gap-0.5">
-                        <span className="text-[13px] font-semibold text-white leading-tight">
+                        <span className="text-[14px] font-bold text-white leading-tight">
                           {standing.Driver.givenName} {standing.Driver.familyName}
                         </span>
-                        {standing.Constructors?.[0] && (
-                          <span className="text-[10px] font-semibold uppercase tracking-widest text-[#706a7a]">
-                            {standing.Constructors[0].name}
+                        {standing.Driver.code && (
+                          <span className="text-[11px] font-mono font-bold tracking-wider text-[#aaaaaa]">
+                            {standing.Driver.code}
                           </span>
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="hidden border-l border-[#1e1a26] text-[13px] text-[#a09aaa] sm:table-cell py-3">
-                      {standing.Constructors?.[0]?.name || "-"}
+                    <TableCell className="hidden text-[13px] text-[#aaaaaa] sm:table-cell py-3.5">
+                      {standing.Constructors?.[0]?.name || "—"}
                     </TableCell>
-                    <TableCell className="border-l border-[#1e1a26] text-right text-[13px] font-bold text-white py-3">
+                    <TableCell className="text-right font-mono text-[14px] font-black text-white py-3.5">
                       {standing.points}
                     </TableCell>
-                    <TableCell className="border-l border-[#1e1a26] text-right text-[13px] text-[#706a7a] pr-5 py-3">
+                    <TableCell className="text-right font-mono text-[13px] text-[#aaaaaa] pr-6 py-3.5">
                       {standing.wins}
                     </TableCell>
                   </TableRow>
@@ -118,19 +83,18 @@ export function StandingsTable(props: DriverStandingsTableProps | ConstructorSta
     );
   }
 
-  // ── Constructor Table ──
+  // ── Constructor Standings Table ──
   const standings = props.standings as ConstructorStanding[];
   return (
-    <Card className="overflow-hidden border border-[#2a2530] bg-[#141118]">
-      <CardContent className="overflow-x-auto p-0 relative">
-        <WaveOverlay />
-        <Table className="border-collapse relative">
+    <Card className="overflow-hidden border border-[#303037] bg-[#15151e] shadow-xl rounded-[14px]">
+      <CardContent className="overflow-x-auto p-0">
+        <Table className="border-collapse w-full">
           <TableHeader>
-            <TableRow className="relative h-12 border-b border-[#2a2530] hover:bg-transparent">
-              <TableHead className={`${thClass} w-12 text-center`}>Pos</TableHead>
+            <TableRow className="border-b border-[#303037] bg-[#1b1b26]/60 hover:bg-[#1b1b26]/60">
+              <TableHead className={`${thClass} w-16 text-center`}>Pos</TableHead>
               <TableHead className={thClass}>Constructor</TableHead>
-              <TableHead className={`${thClass} border-l border-[#1e1a26] text-right`}>Points</TableHead>
-              <TableHead className={`${thClass} border-l border-[#1e1a26] text-right pr-5`}>Wins</TableHead>
+              <TableHead className={`${thClass} text-right`}>Points</TableHead>
+              <TableHead className={`${thClass} text-right pr-6`}>Wins</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -139,20 +103,20 @@ export function StandingsTable(props: DriverStandingsTableProps | ConstructorSta
               return (
                 <TableRow
                   key={standing.Constructor.constructorId}
-                  className={`border-b border-[#1e1a26] transition-colors hover:bg-[#1a1621] last:border-0 ${podiumBorder(pos)}`}
+                  className={`border-b border-[#303037]/60 transition-colors hover:bg-[#1b1b26] last:border-0 ${podiumBorderClass(pos)}`}
                 >
-                  <TableCell className="w-12 text-center py-3">
-                    <span className={`text-[15px] font-bold ${podiumColor(pos)}`}>
+                  <TableCell className="w-16 text-center py-3.5">
+                    <span className={`font-mono text-[14px] font-black ${podiumTextClass(pos)}`}>
                       {standing.positionText}
                     </span>
                   </TableCell>
-                  <TableCell className="text-[13px] font-semibold text-white py-3">
+                  <TableCell className="text-[14px] font-bold text-white py-3.5">
                     {standing.Constructor.name}
                   </TableCell>
-                  <TableCell className="border-l border-[#1e1a26] text-right text-[13px] font-bold text-white py-3">
+                  <TableCell className="text-right font-mono text-[14px] font-black text-white py-3.5">
                     {standing.points}
                   </TableCell>
-                  <TableCell className="border-l border-[#1e1a26] text-right text-[13px] text-[#706a7a] pr-5 py-3">
+                  <TableCell className="text-right font-mono text-[13px] text-[#aaaaaa] pr-6 py-3.5">
                     {standing.wins}
                   </TableCell>
                 </TableRow>

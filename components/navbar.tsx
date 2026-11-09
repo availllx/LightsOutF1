@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
@@ -23,21 +24,28 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full px-4 pt-4">
-      <nav className="mx-auto max-w-7xl rounded-xl border border-white/10 bg-card/70 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+      <nav className="mx-auto max-w-7xl rounded-[14px] border border-[#303037] bg-[#15151e] shadow-xl">
         <div className="flex h-16 items-center justify-between px-4 sm:px-6">
           <Link
             href="/"
-            className="flex items-center gap-3"
-            aria-label="LightsOut home"
+            className="flex items-center gap-3 rounded-[8px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e0dedc]"
+            aria-label="LightsOut Formula 1 Dashboard Home"
             onClick={closeMenu}
           >
-            <img src="/lightsout-logo.svg" alt="LightsOut Logo" className="h-9 w-9 rounded-lg" />
-            <span className="text-xl font-black uppercase tracking-normal text-foreground">
-              LightsOut
+            <Image
+              src="/lightsout-logo.svg"
+              alt="LightsOut Logo"
+              width={34}
+              height={34}
+              className="rounded-[6px]"
+              priority
+            />
+            <span className="text-xl font-black uppercase tracking-tight text-white">
+              Lights<span className="text-[#e10600]">Out</span>
             </span>
           </Link>
 
-          <div className="hidden items-center gap-1 md:flex">
+          <div className="hidden items-center gap-1.5 md:flex" role="menubar">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
 
@@ -45,11 +53,13 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                  role="menuitem"
+                  className={`rounded-[8px] px-3.5 py-2 text-[13px] font-bold uppercase tracking-wider transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e0dedc] ${
                     isActive
-                      ? 'bg-[#ff1600] text-white'
-                      : 'text-muted-foreground hover:bg-white/10 hover:text-foreground'
+                      ? 'bg-[#e10600] text-white shadow-[0_2px_12px_rgba(225,6,0,0.3)]'
+                      : 'text-[#aaaaaa] hover:bg-white/5 hover:text-white'
                   }`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   {item.label}
                 </Link>
@@ -59,9 +69,10 @@ export function Navbar() {
 
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-foreground transition-colors hover:bg-white/10 md:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-[8px] border border-[#303037] bg-white/5 text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e0dedc] md:hidden"
             onClick={() => setIsOpen((current) => !current)}
             aria-expanded={isOpen}
+            aria-controls="mobile-nav"
             aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -69,7 +80,7 @@ export function Navbar() {
         </div>
 
         {isOpen && (
-          <div className="border-t border-white/10 px-4 pb-4 pt-2 md:hidden">
+          <div id="mobile-nav" className="border-t border-[#303037] px-4 pb-4 pt-2 md:hidden">
             <div className="grid gap-1">
               {navItems.map((item) => {
                 const isActive = pathname === item.href;
@@ -78,11 +89,12 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+                    className={`flex min-h-[44px] items-center rounded-[8px] px-3.5 py-2 text-[13px] font-bold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e0dedc] ${
                       isActive
-                        ? 'bg-[#ff1600] text-white'
-                        : 'text-muted-foreground hover:bg-white/10 hover:text-foreground'
+                        ? 'bg-[#e10600] text-white'
+                        : 'text-[#aaaaaa] hover:bg-white/5 hover:text-white'
                     }`}
+                    aria-current={isActive ? 'page' : undefined}
                     onClick={closeMenu}
                   >
                     {item.label}

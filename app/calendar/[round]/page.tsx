@@ -4,6 +4,7 @@ import { getCurrentRaces, getRaceResults, getSprintResults } from "@/lib/api";
 import { formatWIBDateShort, formatWIBTime } from "@/lib/timezone";
 import { Race } from "@/types/f1";
 import { ResultsTable } from "@/components/results/results-table";
+import { MapPin, Calendar, Clock, Globe, ArrowLeft } from "lucide-react";
 
 interface RaceDetailPageProps {
   params: Promise<{
@@ -55,85 +56,78 @@ export default async function RaceDetailPage({ params }: RaceDetailPageProps) {
   return (
     <main className="min-h-screen">
       <div className="mx-auto max-w-7xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
+        {/* Navigation & Status Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-2">
             <Link
               href="/calendar"
-              className="text-[12px] font-semibold uppercase tracking-widest text-[#706a7a] transition-colors hover:text-white"
+              className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-[#aaaaaa] transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e0dedc] rounded-[4px] px-1 -ml-1"
             >
-              Back to Calendar
+              <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
+              <span>Back to Calendar</span>
             </Link>
-            <h1 className="text-4xl font-bold text-foreground">
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[11px] font-bold tracking-wider text-white bg-[#e10600] px-2.5 py-0.5 rounded-[4px]">
+                ROUND {race.round.padStart(2, "0")}
+              </span>
+              <span className="text-[12px] font-bold uppercase tracking-wider text-[#aaaaaa]">
+                FIA Formula One World Championship
+              </span>
+            </div>
+            <h1 className="text-3xl font-black uppercase tracking-tight text-white sm:text-4xl">
               {race.raceName}
             </h1>
-            <p className="text-lg text-muted-foreground">
-              Round {race.round} / {race.Circuit.circuitName}
+            <p className="text-[14px] text-[#aaaaaa]">
+              {race.Circuit.circuitName}
             </p>
           </div>
+
           <span
-            className={`w-fit rounded-full border px-4 py-2 text-[12px] font-bold uppercase tracking-widest ${
+            className={`w-fit rounded-full border px-4 py-1.5 font-mono text-[11px] font-bold uppercase tracking-wider ${
               isFinished
-                ? "border-green-400/20 bg-green-400/10 text-green-400"
-                : "border-white/10 bg-white/7 text-[#c8c2d4]"
+                ? "border-[#00d26a]/30 bg-[#00d26a]/10 text-[#00d26a]"
+                : "border-[#303037] bg-white/5 text-[#aaaaaa]"
             }`}
           >
-            {isFinished ? "Finished" : "Upcoming"}
+            {isFinished ? "Official Results Finalized" : "Upcoming Grand Prix"}
           </span>
         </div>
 
-        <section className="overflow-hidden rounded-2xl border border-[#2a2530] bg-[#141118]">
-          <div className="relative min-h-[220px] px-[22px] py-6">
-            <svg
-              className="pointer-events-none absolute inset-0 h-full w-full opacity-55"
-              viewBox="0 0 900 240"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <radialGradient id="detail-hero-1" cx="78%" cy="45%" r="55%">
-                  <stop offset="0%" stopColor="#c00000" stopOpacity="0.45" />
-                  <stop offset="100%" stopColor="#141118" stopOpacity="0" />
-                </radialGradient>
-                <radialGradient id="detail-hero-2" cx="95%" cy="85%" r="32%">
-                  <stop offset="0%" stopColor="#8b0000" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#141118" stopOpacity="0" />
-                </radialGradient>
-              </defs>
-              <rect width="900" height="240" fill="#141118" />
-              <rect width="900" height="240" fill="url(#detail-hero-1)" />
-              <rect width="900" height="240" fill="url(#detail-hero-2)" />
-              <path d="M210 100 Q390 35 590 92 Q720 130 890 58" stroke="#c00000" strokeWidth="1.5" fill="none" opacity="0.5" />
-              <path d="M160 145 Q350 82 560 126 Q730 164 880 108" stroke="#8b0000" strokeWidth="1" fill="none" opacity="0.35" />
-            </svg>
-
-            <div className="relative z-10 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-              <div className="space-y-5">
+        {/* Circuit & Event Overview Card */}
+        <section className="overflow-hidden rounded-[14px] border border-[#303037] bg-[#15151e] shadow-xl">
+          <div className="h-1 w-full bg-gradient-to-r from-[#e10600] to-transparent" />
+          <div className="p-6">
+            <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
+              <div className="space-y-4">
                 <div>
-                  <p className="text-[12px] font-semibold uppercase tracking-widest text-[#e03535]">
-                    Race Overview
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#e10600]">
+                    Location & Destination
                   </p>
-                  <h2 className="mt-2 text-2xl font-bold text-white">
-                    {race.Circuit.Location.locality},{" "}
-                    {race.Circuit.Location.country}
+                  <h2 className="mt-1 text-2xl font-black uppercase text-white">
+                    {race.Circuit.Location.locality}, {race.Circuit.Location.country}
                   </h2>
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl border border-[#24202c] bg-[#1a1621] px-4 py-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-widest text-[#706a7a]">
-                      Race Date
-                    </p>
-                    <p className="mt-1 text-[14px] font-semibold text-white">
+                  <div className="rounded-[8px] border border-[#303037] bg-[#1b1b26] p-3.5">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#aaaaaa]">
+                      <Calendar className="h-3 w-3 text-[#e10600]" aria-hidden />
+                      <span>Race Date</span>
+                    </div>
+                    <p className="mt-1 text-[14px] font-bold text-white">
                       {formatWIBDateShort(race.date)}
                     </p>
-                    <p className="text-[13px] text-[#e03535]">
+                    <p className="font-mono text-[12px] text-[#aaaaaa]">
                       {formatWIBTime(race.date, race.time)} WIB
                     </p>
                   </div>
-                  <div className="rounded-xl border border-[#24202c] bg-[#1a1621] px-4 py-3">
-                    <p className="text-[11px] font-semibold uppercase tracking-widest text-[#706a7a]">
-                      Coordinates
-                    </p>
-                    <p className="mt-1 text-[14px] font-semibold text-white">
+
+                  <div className="rounded-[8px] border border-[#303037] bg-[#1b1b26] p-3.5">
+                    <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#aaaaaa]">
+                      <MapPin className="h-3 w-3 text-[#e10600]" aria-hidden />
+                      <span>Coordinates</span>
+                    </div>
+                    <p className="mt-1 font-mono text-[13px] font-bold text-white">
                       {race.Circuit.Location.lat}, {race.Circuit.Location.long}
                     </p>
                     {race.url && (
@@ -141,100 +135,123 @@ export default async function RaceDetailPage({ params }: RaceDetailPageProps) {
                         href={race.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[13px] font-semibold text-[#e03535] transition-colors hover:text-white"
+                        className="mt-1 inline-flex items-center gap-1 text-[11px] font-bold text-[#e10600] transition-colors hover:text-white"
                       >
-                        Open race info
+                        <Globe className="h-3 w-3" aria-hidden />
+                        <span>Official Ergast Dossier</span>
                       </a>
                     )}
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#24202c] bg-[#1a1621] p-4">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-[#706a7a]">
-                  Circuit
-                </p>
-                <p className="mt-2 text-[20px] font-bold leading-tight text-white">
-                  {race.Circuit.circuitName}
-                </p>
-                <p className="mt-2 text-[13px] text-[#a09aaa]">
-                  {race.Circuit.Location.locality},{" "}
-                  {race.Circuit.Location.country}
-                </p>
+              {/* Circuit Info Panel */}
+              <div className="flex flex-col justify-between rounded-[8px] border border-[#303037] bg-[#1b1b26] p-5">
+                <div>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#aaaaaa]">
+                    Official Circuit
+                  </p>
+                  <p className="mt-2 text-xl font-black uppercase text-white">
+                    {race.Circuit.circuitName}
+                  </p>
+                  <p className="mt-1 text-[13px] text-[#aaaaaa]">
+                    {race.Circuit.Location.locality}, {race.Circuit.Location.country}
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[#303037] text-[11px] text-[#70707c]">
+                  Track Coordinates: {race.Circuit.Location.lat}° N / {race.Circuit.Location.long}° E
+                </div>
               </div>
             </div>
           </div>
         </section>
 
+        {/* Weekend Schedule */}
         <section className="space-y-4">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">
+            <h2 className="text-xl font-black uppercase tracking-tight text-white">
               Weekend Schedule
             </h2>
-            <p className="text-sm text-muted-foreground">
-              Session times are shown in WIB.
+            <p className="text-[13px] text-[#aaaaaa]">
+              All track session times synchronized to Western Indonesia Time (WIB)
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {sessions.map(({ label, session }) => (
-              <div
-                key={label}
-                className="rounded-xl border border-[#2a2530] bg-[#141118] px-4 py-3"
-              >
-                <p className="text-[12px] font-bold uppercase tracking-widest text-[#e03535]">
-                  {label}
-                </p>
-                <p className="mt-2 text-[14px] font-semibold text-white">
-                  {formatWIBDateShort(session.date)}
-                </p>
-                <p className="text-[13px] text-[#706a7a]">
-                  {formatWIBTime(session.date, session.time)} WIB
-                </p>
-              </div>
-            ))}
+            {sessions.map(({ label, session }) => {
+              const isRace = label === "Race";
+              return (
+                <div
+                  key={label}
+                  className={`rounded-[10px] border p-4 transition-colors ${
+                    isRace
+                      ? "border-[#e10600] bg-[#e10600]/10"
+                      : "border-[#303037] bg-[#15151e] hover:border-[#454550]"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <p className={`text-[12px] font-black uppercase tracking-wider ${isRace ? "text-[#e10600]" : "text-[#aaaaaa]"}`}>
+                      {label}
+                    </p>
+                    {isRace && (
+                      <span className="text-[9px] font-black uppercase tracking-widest bg-[#e10600] text-white px-2 py-0.5 rounded-[3px]">
+                        Grand Prix
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-2 text-[14px] font-bold text-white">
+                    {formatWIBDateShort(session.date)}
+                  </p>
+                  <p className="mt-0.5 font-mono text-[12px] font-semibold text-[#aaaaaa]">
+                    {formatWIBTime(session.date, session.time)} WIB
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </section>
 
+        {/* Race Results */}
         <section className="space-y-4">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">
-              Race Results
+            <h2 className="text-xl font-black uppercase tracking-tight text-white">
+              Race Classification
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-[13px] text-[#aaaaaa]">
               {isFinished
-                ? "Official results from the race endpoint."
-                : "Results will appear after the race is completed."}
+                ? "Official FIA classification from the race timing transponders."
+                : "Results will populate immediately once the chequered flag falls."}
             </p>
           </div>
           {isFinished ? (
             <ResultsTable results={results} />
           ) : (
-            <div className="rounded-xl border border-[#2a2530] bg-[#141118] p-6 text-center">
-              <p className="text-sm text-[#a09aaa]">
-                No results available yet for this race.
+            <div className="rounded-[14px] border border-[#303037] bg-[#15151e] p-8 text-center shadow-xl">
+              <p className="text-[14px] font-medium text-[#aaaaaa]">
+                No race classification available yet. Scheduled start: {formatWIBDateShort(race.date)} at {formatWIBTime(race.date, race.time)} WIB.
               </p>
             </div>
           )}
         </section>
 
+        {/* Sprint Results (if applicable) */}
         {hasSprint && (
           <section className="space-y-4">
             <div>
-              <h2 className="text-2xl font-bold text-foreground">
-                Sprint Results
+              <h2 className="text-xl font-black uppercase tracking-tight text-white">
+                Sprint Classification
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-[13px] text-[#aaaaaa]">
                 {isSprintFinished
-                  ? "Official results from the sprint endpoint."
-                  : "Sprint results will appear after the sprint is completed."}
+                  ? "Official classification from the 100km sprint shootout and race."
+                  : "Sprint results will appear once the sprint race concludes."}
               </p>
             </div>
             {isSprintFinished ? (
               <ResultsTable results={sprintResults} />
             ) : (
-              <div className="rounded-xl border border-[#2a2530] bg-[#141118] p-6 text-center">
-                <p className="text-sm text-[#a09aaa]">
-                  No sprint results available yet for this Grand Prix.
+              <div className="rounded-[14px] border border-[#303037] bg-[#15151e] p-8 text-center shadow-xl">
+                <p className="text-[14px] font-medium text-[#aaaaaa]">
+                  No sprint classification available yet for this Grand Prix.
                 </p>
               </div>
             )}

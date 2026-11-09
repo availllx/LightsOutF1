@@ -10,7 +10,7 @@ import {
 } from "@/components/results/result-type-selector";
 import { ResultsTable } from "@/components/results/results-table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent } from "@/components/ui/card";
+import { Calendar, MapPin, AlertCircle } from "lucide-react";
 
 export default function ResultsPage() {
   const [races, setRaces] = useState<Race[]>([]);
@@ -92,8 +92,10 @@ export default function ResultsPage() {
     return (
       <main className="min-h-screen">
         <div className="mx-auto max-w-7xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
-          <div className="rounded-lg border border-red-900/20 bg-red-900/10 p-6 text-center">
-            <p className="text-red-400">Error loading results: {error}</p>
+          <div className="overflow-hidden rounded-[14px] border border-[#e10600]/30 bg-[#1e1218] p-8 text-center shadow-xl">
+            <AlertCircle className="mx-auto h-8 w-8 text-[#e10600] mb-2" aria-hidden />
+            <p className="text-[14px] font-bold text-[#e10600]">Error loading results</p>
+            <p className="mt-1 text-[13px] text-[#aaaaaa]">{error}</p>
           </div>
         </div>
       </main>
@@ -108,30 +110,36 @@ export default function ResultsPage() {
     <main className="min-h-screen">
       <div className="mx-auto max-w-7xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
         {/* Page Header */}
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold text-foreground">Results</h1>
-          <p className="text-lg text-muted-foreground">
-            View race and sprint results from completed Grand Prix
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#e10600]" aria-hidden />
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#e10600]">
+              Official Classification
+            </span>
+          </div>
+          <h1 className="text-3xl font-black uppercase tracking-tight text-white sm:text-4xl">
+            Grand Prix Results
+          </h1>
+          <p className="text-[13px] text-[#aaaaaa]">
+            Full race classifications, timings, grid positions, and championship points
           </p>
         </div>
 
         {hasNoResults ? (
-          <Card className="border-border">
-            <CardContent className="p-8 text-center">
-              <p className="text-muted-foreground">
-                No finished races yet. Check back after the first race of the
-                season!
-              </p>
-            </CardContent>
-          </Card>
+          <div className="overflow-hidden rounded-[14px] border border-[#303037] bg-[#15151e] p-12 text-center shadow-xl">
+            <p className="text-[15px] font-bold text-white">Season Classification Pending</p>
+            <p className="mt-1 text-[13px] text-[#aaaaaa]">
+              No finished races yet. Results will populate immediately following the conclusion of Round 1.
+            </p>
+          </div>
         ) : (
           <>
             {/* Selectors */}
             <div className="grid gap-4 lg:grid-cols-2">
               {loading ? (
                 <>
-                  <Skeleton className="h-28 w-full rounded-xl" />
-                  <Skeleton className="h-28 w-full rounded-xl" />
+                  <Skeleton className="h-28 w-full rounded-[14px] bg-[#15151e]" />
+                  <Skeleton className="h-28 w-full rounded-[14px] bg-[#15151e]" />
                 </>
               ) : (
                 <>
@@ -149,78 +157,73 @@ export default function ResultsPage() {
               )}
             </div>
 
+            {/* Selected GP Headline Card */}
             {selectedRaceInfo && (
-  <div className="overflow-hidden rounded-2xl border border-[#2a2530] bg-[#141118]">
-    <div className="relative min-h-[120px] bg-[#141118] px-[22px] py-5">
+              <div className="overflow-hidden rounded-[14px] border border-[#303037] bg-[#15151e] shadow-xl">
+                <div className="h-1 w-full bg-gradient-to-r from-[#e10600] to-transparent" />
+                <div className="p-5 sm:p-6">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="font-mono text-[11px] font-bold tracking-wider text-white bg-[#e10600] px-2 py-0.5 rounded-[4px]">
+                          ROUND {selectedRaceInfo.round.padStart(2, "0")}
+                        </span>
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#aaaaaa]">
+                          Official Classification
+                        </span>
+                      </div>
+                      <h2 className="text-2xl font-black uppercase text-white sm:text-3xl">
+                        {selectedRaceInfo.raceName}
+                      </h2>
+                    </div>
 
-      {/* Wave SVG */}
-      <svg
-        className="absolute inset-0 h-full w-full opacity-55 pointer-events-none"
-        viewBox="0 0 680 120"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <radialGradient id="ri1" cx="75%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="#c00000" stopOpacity="0.45" />
-            <stop offset="100%" stopColor="#141118" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="ri2" cx="95%" cy="85%" r="30%">
-            <stop offset="0%" stopColor="#8b0000" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#141118" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        <rect width="680" height="120" fill="#141118" />
-        <rect width="680" height="120" fill="url(#ri1)" />
-        <rect width="680" height="120" fill="url(#ri2)" />
-        <path d="M200 55 Q320 18 460 48 Q560 68 660 32" stroke="#c00000" strokeWidth="1.5" fill="none" opacity="0.5" />
-        <path d="M160 75 Q300 42 440 65 Q545 82 640 55" stroke="#8b0000" strokeWidth="1" fill="none" opacity="0.35" />
-        <path d="M180 95 Q340 68 470 84 Q570 96 650 76" stroke="#c00000" strokeWidth="0.8" fill="none" opacity="0.2" />
-      </svg>
-
-      {/* Content */}
-      <div className="relative z-10 space-y-[5px]">
-        <h2 className="text-[24px] font-bold text-white leading-tight">
-          {selectedRaceInfo.raceName}
-        </h2>
-        <p className="text-[14px] text-[#a09aaa]">
-          {selectedRaceInfo.Circuit.Location.locality},{" "}
-          {selectedRaceInfo.Circuit.Location.country}
-        </p>
-        <p className="text-[12px] font-semibold text-[#e03535]">
-          {new Date(selectedRaceInfo.date).toLocaleDateString("en-US", {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </p>
-      </div>
-
-    </div>
-  </div>
-)}
-
-            {/* Results Table */}
-            <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">
-                Showing{" "}
-                <span className="font-semibold text-foreground">
-                  {resultType === "sprint" && hasSprint
-                    ? "Sprint Results"
-                    : "Race Results"}
-                </span>
-              </p>
-            </div>
-            {resultsLoading ? (
-              <div className="space-y-2">
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-10 w-full" />
+                    <div className="space-y-1 text-left sm:text-right">
+                      <p className="flex items-center gap-1.5 text-[13px] text-[#aaaaaa] sm:justify-end">
+                        <MapPin className="h-3.5 w-3.5 text-[#e10600]" aria-hidden />
+                        <span>{selectedRaceInfo.Circuit.Location.locality}, {selectedRaceInfo.Circuit.Location.country}</span>
+                      </p>
+                      <p className="flex items-center gap-1.5 text-[12px] font-semibold text-[#aaaaaa] sm:justify-end">
+                        <Calendar className="h-3.5 w-3.5" aria-hidden />
+                        <span>
+                          {new Date(selectedRaceInfo.date).toLocaleDateString("en-US", {
+                            weekday: "short",
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            ) : (
-              <ResultsTable results={results} />
             )}
+
+            {/* Results Table Section */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-[12px] font-bold uppercase tracking-[0.15em] text-[#aaaaaa]">
+                  Session:{" "}
+                  <span className="text-white">
+                    {resultType === "sprint" && hasSprint
+                      ? "Sprint Shootout & Race"
+                      : "Grand Prix Feature Race"}
+                  </span>
+                </p>
+              </div>
+
+              {resultsLoading ? (
+                <div className="space-y-2 overflow-hidden rounded-[14px] border border-[#303037] bg-[#15151e] p-4 shadow-xl">
+                  <Skeleton className="h-12 w-full bg-[#1b1b26]" />
+                  <Skeleton className="h-10 w-full bg-[#1b1b26]" />
+                  <Skeleton className="h-10 w-full bg-[#1b1b26]" />
+                  <Skeleton className="h-10 w-full bg-[#1b1b26]" />
+                  <Skeleton className="h-10 w-full bg-[#1b1b26]" />
+                </div>
+              ) : (
+                <ResultsTable results={results} />
+              )}
+            </div>
           </>
         )}
       </div>

@@ -88,15 +88,19 @@ export function RacePhaseContent({ race }: RacePhaseContentProps) {
     return <CountdownTimer race={race} />;
   }
 
-  // Weekend started (FP1 window) but race isn't in the live grid window yet.
-  return (
-    <div className="rounded-xl border border-[#2a2530] bg-neutral-950/50 px-4 py-6 text-center backdrop-blur-sm">
-      <p className="text-sm font-semibold text-[#e03535]">Sedang Berlangsung</p>
-      <p className="mt-1 text-sm text-[#a09aaa]">
-        Free Practice 1 is live. Starting Grid will appear when the race begins.
-      </p>
-    </div>
-  );
+  if (phase === "weekend") {
+    return (
+      <div className="rounded-xl border border-[#2a2530] bg-neutral-950/50 px-4 py-6 text-center backdrop-blur-sm">
+        <p className="text-sm font-semibold text-[#e03535]">Race Weekend Underway</p>
+        <p className="mt-1 text-sm text-[#a09aaa]">
+          Free Practice 1 is live. Starting Grid will appear when the race begins.
+        </p>
+      </div>
+    );
+  }
+
+  // Fallback
+  return null;
 }
 
 export function RacePhaseLabel({ race }: { race: Race }) {
@@ -128,7 +132,7 @@ export function RacePhaseLabel({ race }: { race: Race }) {
   if (phase === "weekend") {
     return (
       <p className="text-[11px] font-semibold uppercase tracking-widest text-[#e03535]">
-        Sedang Berlangsung
+        Race Weekend Underway
       </p>
     );
   }

@@ -76,15 +76,18 @@ export function DashboardNextRaceSection() {
 
   const skeleton = useMemo(() => {
     return (
-      <Card className="border-border">
-        <CardContent className="pt-6">
+      <Card className="border-[#303037] bg-[#15151e] rounded-[14px] shadow-xl">
+        <CardContent className="p-6">
           <div className="space-y-4">
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-6 w-3/4" />
-            <div className="space-y-2 pt-4">
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-6 w-32 bg-[#1b1b26]" />
+            <Skeleton className="h-8 w-2/3 bg-[#1b1b26]" />
+            <Skeleton className="h-4 w-1/3 bg-[#1b1b26]" />
+            <div className="space-y-2 pt-4 border-t border-[#303037]">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Skeleton key={i} className="h-16 w-full bg-[#1b1b26] rounded-[8px]" />
+                ))}
+              </div>
             </div>
           </div>
         </CardContent>
@@ -96,12 +99,11 @@ export function DashboardNextRaceSection() {
 
   if (!hasRace) {
     return (
-      <div className="rounded-lg border border-border bg-card p-6 text-center">
-        <p className="text-muted-foreground">No upcoming races scheduled</p>
+      <div className="rounded-[14px] border border-[#303037] bg-[#15151e] p-8 text-center shadow-xl">
+        <p className="text-[14px] font-medium text-[#aaaaaa]">No upcoming races currently scheduled</p>
       </div>
     );
   }
 
   return <NextRaceCard race={race!} />;
 }
-

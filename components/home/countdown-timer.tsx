@@ -3,9 +3,23 @@
 import { useEffect, useState } from "react";
 import { Race } from "@/types/f1";
 import { getTimeUntilWeekendStart } from "@/lib/race-phase";
+import { padTwo } from "@/lib/f1-utils";
 
 interface CountdownTimerProps {
   race: Race;
+}
+
+function TimeUnit({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <div className="flex h-[68px] w-[68px] items-center justify-center rounded-[10px] border border-[#303037] bg-[#1b1b26] font-mono text-3xl font-black tabular-nums text-white shadow-inner sm:h-[78px] sm:w-[78px] sm:text-4xl transition-colors hover:border-[#454550]">
+        {padTwo(value)}
+      </div>
+      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#aaaaaa]">
+        {label}
+      </span>
+    </div>
+  );
 }
 
 export function CountdownTimer({ race }: CountdownTimerProps) {
@@ -29,42 +43,24 @@ export function CountdownTimer({ race }: CountdownTimerProps) {
 
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
-
     return () => clearInterval(interval);
   }, [race]);
 
-  const TimeUnit = ({
-    value,
-    label,
-  }: {
-    value: number;
-    label: string;
-  }) => (
-    <div className="flex flex-col items-center gap-2">
-      <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-accent text-2xl font-bold text-accent-foreground sm:h-20 sm:w-20 sm:text-3xl">
-        {String(value).padStart(2, "0")}
-      </div>
-      <span className="text-xs font-medium uppercase text-muted-foreground sm:text-sm">
-        {label}
-      </span>
-    </div>
-  );
+  const ariaLabel = `${timeLeft.days} days, ${timeLeft.hours} hours, ${timeLeft.minutes} minutes, ${timeLeft.seconds} seconds until race weekend`;
 
   return (
-    <div className="flex items-center justify-center gap-2 sm:gap-4">
+    <div
+      role="timer"
+      aria-label={ariaLabel}
+      className="flex items-center justify-center gap-2 sm:gap-3 py-2"
+    >
       <TimeUnit value={timeLeft.days} label="Days" />
-      <span className="text-2xl font-bold text-muted-foreground sm:text-3xl">
-        :
-      </span>
+      <span className="mb-6 font-mono text-2xl font-black text-[#303037] sm:text-3xl select-none" aria-hidden>:</span>
       <TimeUnit value={timeLeft.hours} label="Hours" />
-      <span className="text-2xl font-bold text-muted-foreground sm:text-3xl">
-        :
-      </span>
-      <TimeUnit value={timeLeft.minutes} label="Minutes" />
-      <span className="text-2xl font-bold text-muted-foreground sm:text-3xl">
-        :
-      </span>
-      <TimeUnit value={timeLeft.seconds} label="Seconds" />
+      <span className="mb-6 font-mono text-2xl font-black text-[#303037] sm:text-3xl select-none" aria-hidden>:</span>
+      <TimeUnit value={timeLeft.minutes} label="Mins" />
+      <span className="mb-6 font-mono text-2xl font-black text-[#303037] sm:text-3xl select-none" aria-hidden>:</span>
+      <TimeUnit value={timeLeft.seconds} label="Secs" />
     </div>
   );
 }

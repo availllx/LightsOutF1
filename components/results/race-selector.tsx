@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Flag } from "lucide-react";
 
 interface RaceSelectorProps {
   races: Race[];
@@ -28,52 +29,29 @@ export function RaceSelector({
   const racesToShow = finishedRaces.length > 0 ? finishedRaces : races;
 
   return (
-  <div className="overflow-hidden rounded-2xl border border-[#2a2530] bg-[#141118]">
-
-    {/* Wave BG */}
-    <div className="relative min-h-[90px] bg-[#141118] px-[22px] py-5">
-      <svg
-        className="absolute inset-0 h-full w-full opacity-50 pointer-events-none"
-        viewBox="0 0 680 110"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <radialGradient id="sg1" cx="75%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="#c00000" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#141118" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="sg2" cx="95%" cy="90%" r="30%">
-            <stop offset="0%" stopColor="#8b0000" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#141118" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        <rect width="680" height="110" fill="#141118" />
-        <rect width="680" height="110" fill="url(#sg1)" />
-        <rect width="680" height="110" fill="url(#sg2)" />
-        <path d="M200 55 Q320 20 450 50 Q550 70 650 35" stroke="#c00000" strokeWidth="1.5" fill="none" opacity="0.5" />
-        <path d="M160 72 Q300 42 430 65 Q530 82 630 55" stroke="#8b0000" strokeWidth="1" fill="none" opacity="0.35" />
-        <path d="M180 88 Q340 65 460 80 Q560 92 640 72" stroke="#c00000" strokeWidth="0.8" fill="none" opacity="0.2" />
-      </svg>
-
-      {/* Content */}
-      <div className="relative z-10 grid gap-3 md:grid-cols-[1fr_minmax(18rem,28rem)] md:items-end">
-        <div className="space-y-1">
-          <label className="text-[15px] font-bold text-white">
-            Select Race
-          </label>
-          <p className="text-[13px] text-[#706a7a]">
-            Choose a completed race to view its classification.
+    <div className="overflow-hidden rounded-[14px] border border-[#303037] bg-[#15151e] p-5 shadow-xl">
+      <div className="space-y-3">
+        <div>
+          <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#aaaaaa]">
+            <Flag className="h-3 w-3 text-[#e10600]" aria-hidden />
+            <span>Select Grand Prix</span>
+          </div>
+          <p className="mt-1 text-[13px] text-[#aaaaaa]">
+            Choose a completed race to inspect classification.
           </p>
         </div>
 
         <Select value={selectedRound} onValueChange={onRoundChange}>
-          <SelectTrigger className="h-11 w-full rounded-[10px] border border-[#2a2530] bg-[#1e1a26] text-[#c8c2d4] shadow-none hover:bg-[#242030] hover:border-[#3d3648] transition-colors focus:ring-0 focus:ring-offset-0">
-            <SelectValue placeholder="Choose a race..." />
+          <SelectTrigger
+            className="h-11 w-full rounded-[8px] border border-[#303037] bg-[#1b1b26] text-[13px] font-semibold text-white shadow-none transition-colors hover:border-[#454550] focus:ring-2 focus:ring-[#e0dedc] focus:ring-offset-0"
+            aria-label="Select Grand Prix round"
+          >
+            <SelectValue placeholder="Select race..." />
           </SelectTrigger>
-          <SelectContent className="rounded-xl border border-[#2a2530] bg-[#1a1621] text-[#c8c2d4] backdrop-blur-xl">
+          <SelectContent className="max-h-80 rounded-[10px] border border-[#303037] bg-[#1b1b26] text-white shadow-2xl backdrop-blur-xl">
             {racesToShow.length === 0 ? (
-              <div className="px-3 py-2 text-[13px] text-[#706a7a]">
-                No races available
+              <div className="px-3 py-2 text-[13px] text-[#aaaaaa]">
+                No completed races available
               </div>
             ) : (
               racesToShow.map((race) => {
@@ -84,10 +62,12 @@ export function RaceSelector({
                   <SelectItem
                     key={race.round}
                     value={race.round}
-                    className="text-[13px] text-[#c8c2d4] focus:bg-[#e03535] focus:text-white rounded-lg"
+                    className="text-[13px] text-white focus:bg-[#e10600] focus:text-white rounded-[6px]"
                   >
-                    {isFinished ? "Finished — " : ""}
-                    Round {race.round} · {race.raceName}
+                    <span className="font-mono text-[#aaaaaa]">R{race.round.padStart(2, "0")}</span>
+                    {" · "}
+                    <span className="font-bold">{race.raceName}</span>
+                    {isFinished ? " (Official)" : ""}
                   </SelectItem>
                 );
               })
@@ -95,14 +75,6 @@ export function RaceSelector({
           </SelectContent>
         </Select>
       </div>
-
-      {finishedRaces.length === 0 && (
-        <p className="relative z-10 mt-4 text-[13px] text-[#706a7a]">
-          No race results available yet. The first race will be available after it concludes.
-        </p>
-      )}
     </div>
-
-  </div>
-);
+  );
 }

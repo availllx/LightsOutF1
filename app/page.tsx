@@ -8,15 +8,14 @@ import { getDriverStandings } from "@/lib/api";
 
 function LoadingSkeleton() {
   return (
-    <Card className="border-border">
-      <CardContent className="pt-6">
+    <Card className="border-[#303037] bg-[#15151e] rounded-[14px]">
+      <CardContent className="p-6">
         <div className="space-y-4">
-          <Skeleton className="h-8 w-full" />
-          <Skeleton className="h-6 w-3/4" />
-          <div className="space-y-2 pt-4">
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-7 w-48 bg-[#1b1b26]" />
+          <div className="space-y-2 pt-2">
+            <Skeleton className="h-11 w-full bg-[#1b1b26] rounded-[8px]" />
+            <Skeleton className="h-11 w-full bg-[#1b1b26] rounded-[8px]" />
+            <Skeleton className="h-11 w-full bg-[#1b1b26] rounded-[8px]" />
           </div>
         </div>
       </CardContent>
@@ -30,9 +29,9 @@ async function DriversStandingsSection() {
 
     if (!standings || standings.length === 0) {
       return (
-        <div className="rounded-lg border border-border bg-card p-6 text-center">
-          <p className="text-muted-foreground">
-            Championship standings not yet available. Check back after the first race of the season.
+        <div className="rounded-[14px] border border-[#303037] bg-[#15151e] p-8 text-center shadow-xl">
+          <p className="text-[14px] font-medium text-[#aaaaaa]">
+            Championship standings will be published immediately after Round 1.
           </p>
         </div>
       );
@@ -40,11 +39,11 @@ async function DriversStandingsSection() {
 
     return <TopDriversSection standings={standings} />;
   } catch (error) {
-    console.error("[v0] Error in standings section:", error);
+    console.error("Error in standings section:", error);
     return (
-      <div className="rounded-lg border border-border bg-card p-6 text-center">
-        <p className="text-muted-foreground">
-          Championship standings not yet available. Check back after the first race of the season.
+      <div className="rounded-[14px] border border-[#303037] bg-[#15151e] p-8 text-center shadow-xl">
+        <p className="text-[14px] font-medium text-[#aaaaaa]">
+          Championship standings currently unavailable. Check back shortly.
         </p>
       </div>
     );
@@ -54,7 +53,7 @@ async function DriversStandingsSection() {
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <div className="mx-auto max-w-7xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl space-y-8 px-4 py-10 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <HeroSection />
 
