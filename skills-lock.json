@@ -1,6 +1,20 @@
 {
   "version": 1,
   "skills": {
+    "ai-slop-cleaner": {
+      "source": "yeachan-heo/oh-my-claudecode",
+      "sourceType": "github",
+      "skillPath": "skills/ai-slop-cleaner/SKILL.md",
+      "computedHash": "f80f51a2bc56368826b9d2df44a1491592ab47c25dec6dbe41602a20e9072a81",
+      "installMode": "copy"
+    },
+    "deepinit": {
+      "source": "yeachan-heo/oh-my-claudecode",
+      "sourceType": "github",
+      "skillPath": "skills/deepinit/SKILL.md",
+      "computedHash": "c70cd5440dc6878ecd45daea0cabaa4eac251cb664a68d6b895b1f8fec790860",
+      "installMode": "copy"
+    },
     "design-taste-frontend": {
       "source": "Leonxlnx/taste-skill",
       "sourceType": "github",
@@ -19,6 +33,20 @@
       "sourceType": "github",
       "skillPath": "skills/vercel-optimize/SKILL.md",
       "computedHash": "fb87d3a135fef30748f772200a9f161f780b5a16830e8e70a3a126195cb16963",
+      "installMode": "copy"
+    },
+    "verify": {
+      "source": "yeachan-heo/oh-my-claudecode",
+      "sourceType": "github",
+      "skillPath": "skills/verify/SKILL.md",
+      "computedHash": "329c036f5dae1c62ebba0bcf5fd45225faacc441351bda18da4c46f9b4c8cd08",
+      "installMode": "copy"
+    },
+    "visual-verdict": {
+      "source": "yeachan-heo/oh-my-claudecode",
+      "sourceType": "github",
+      "skillPath": "skills/visual-verdict/SKILL.md",
+      "computedHash": "6f55cd821f60c7f09c43de30dd43966b7d41d58d33548d5260179d5ca4c10bb9",
       "installMode": "copy"
     },
     "web-design-guidelines": {

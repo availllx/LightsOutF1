@@ -6,22 +6,19 @@ import { Trophy } from "lucide-react";
 
 const PODIUM_STYLES: Record<
   number,
-  { border: string; position: string; glow: string }
+  { border: string; position: string }
 > = {
   1: {
     border: "border-l-[3px] border-l-[#e10600]",
     position: "text-[#e10600]",
-    glow: "from-[#e10600]/15 to-transparent",
   },
   2: {
     border: "border-l-[3px] border-l-[#c0c0c8]",
     position: "text-[#d0d0d8]",
-    glow: "from-white/10 to-transparent",
   },
   3: {
     border: "border-l-[3px] border-l-[#cd7f32]",
     position: "text-[#cd7f32]",
-    glow: "from-[#cd7f32]/10 to-transparent",
   },
 };
 
@@ -33,13 +30,9 @@ function PodiumCard({ result }: { result: RaceResult }) {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-[10px] border border-[#303037] bg-[#1b1b26] p-4 transition-colors hover:border-[#454550] ${style.border}`}
+      className={`rounded-[10px] border border-[#303037] bg-[#1b1b26] p-4 transition-colors hover:border-[#454550] ${style.border}`}
     >
-      <div
-        className={`pointer-events-none absolute inset-0 bg-gradient-to-r ${style.glow}`}
-        aria-hidden
-      />
-      <div className="relative z-10 flex items-center gap-4">
+      <div className="flex items-center gap-4">
         <span
           className={`font-mono text-3xl font-black tabular-nums ${style.position}`}
         >

@@ -90,10 +90,10 @@ export function RacePhaseContent({ race }: RacePhaseContentProps) {
 
   if (phase === "weekend") {
     return (
-      <div className="rounded-xl border border-[#2a2530] bg-neutral-950/50 px-4 py-6 text-center backdrop-blur-sm">
-        <p className="text-sm font-semibold text-[#e03535]">Race Weekend Underway</p>
-        <p className="mt-1 text-sm text-[#a09aaa]">
-          Free Practice 1 is live. Starting Grid will appear when the race begins.
+      <div className="rounded-[10px] border border-[#303037] bg-[#1b1b26] px-4 py-6 text-center">
+        <p className="text-[13px] font-bold uppercase tracking-[0.15em] text-[#e10600]">Race Weekend Underway</p>
+        <p className="mt-1.5 text-[13px] text-[#aaaaaa]">
+          Free Practice sessions are live. Starting Grid will appear when the race begins.
         </p>
       </div>
     );
@@ -115,7 +115,7 @@ export function RacePhaseLabel({ race }: { race: Race }) {
 
   if (phase === "grid") {
     return (
-      <p className="text-[11px] font-semibold uppercase tracking-widest text-[#e03535]">
+      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#e10600]">
         Race In Progress
       </p>
     );
@@ -123,7 +123,7 @@ export function RacePhaseLabel({ race }: { race: Race }) {
 
   if (phase === "before") {
     return (
-      <p className="text-[11px] font-semibold uppercase tracking-widest text-[#706a7a]">
+      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#aaaaaa]">
         Time Until FP1
       </p>
     );
@@ -131,7 +131,7 @@ export function RacePhaseLabel({ race }: { race: Race }) {
 
   if (phase === "weekend") {
     return (
-      <p className="text-[11px] font-semibold uppercase tracking-widest text-[#e03535]">
+      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#e10600]">
         Race Weekend Underway
       </p>
     );
@@ -139,14 +139,14 @@ export function RacePhaseLabel({ race }: { race: Race }) {
 
   if (phase === "post") {
     return (
-      <p className="text-[11px] font-semibold uppercase tracking-widest text-[#706a7a]">
+      <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#aaaaaa]">
         Race Results — Podium
       </p>
     );
   }
 
   return (
-    <p className="text-[11px] font-semibold uppercase tracking-widest text-[#706a7a]">
+    <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#aaaaaa]">
       Time Until FP1
     </p>
   );
